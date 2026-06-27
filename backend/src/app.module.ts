@@ -10,6 +10,7 @@ import { DatabaseModule } from './database/database.module';
 import { BoardModule } from './board/board.module';
 import { ColumnsModule } from './columns/columns.module';
 import { CardsModule } from './cards/cards.module';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { CardsModule } from './cards/cards.module';
     BoardModule,
     ColumnsModule,
     CardsModule,
+    AiModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       exclude: ['/api*'],

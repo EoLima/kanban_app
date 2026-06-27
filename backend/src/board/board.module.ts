@@ -7,5 +7,6 @@ import { BoardService } from './board.service';
   imports: [PrismaModule],
   controllers: [BoardController],
   providers: [BoardService],
+  exports: [BoardService],
 })
 export class BoardModule {}
