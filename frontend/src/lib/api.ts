@@ -101,6 +101,25 @@ export const deleteCard = (
     method: "DELETE",
   });
 
+type ChatMessage = {
+  role: string;
+  content: string;
+};
+
+type ChatResponse = {
+  reply: string;
+  updates: unknown[];
+};
+
+export const sendChatMessage = (
+  message: string,
+  history: ChatMessage[],
+): Promise<ChatResponse> =>
+  request<ChatResponse>("/api/ai/chat", {
+    method: "POST",
+    body: JSON.stringify({ message, history }),
+  });
+
 export const moveCard = (
   cardId: string,
   sourceColumnId: string,

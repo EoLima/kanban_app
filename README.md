@@ -15,7 +15,7 @@ A project management MVP with a Kanban board and AI-powered chat assistant.
 
 - **Frontend**: Next.js 16, React 19, TailwindCSS 4, @dnd-kit
 - **Backend**: NestJS 11, Prisma ORM, SQLite
-- **AI**: OpenRouter (google/gemini-2.5-flash:free)
+- **AI**: OpenRouter (openai/gpt-oss-20b:free)
 - **Container**: Docker
 
 ## Quick Start
@@ -25,8 +25,10 @@ cp .env.example .env   # add OPENROUTER_API_KEY
 ./scripts/start.sh      # builds and runs on port 3000
 ```
 
-For Windows: `scripts\start.bat`
+For Windows: `./scripts/start.bat`
+Stop with: `./scripts/stop.bat`
 
+For Linux/Mac: `./scripts/start.sh`
 Stop with: `./scripts/stop.sh`
 
 ## Architecture
@@ -35,13 +37,13 @@ Single-page app served by NestJS backend inside a Docker container. Static Next.
 
 ## Scripts
 
-| Script | Purpose |
-|--------|---------|
-| `scripts/start.sh` | Build Docker image and start container |
-| `scripts/stop.sh` | Stop and clean up container |
-| `scripts/start.bat` | Windows start |
-| `scripts/stop.bat` | Windows stop |
-| `scripts/e2e-server.sh` | E2E test server |
+| Script                  | Purpose                                |
+| ----------------------- | -------------------------------------- |
+| `scripts/start.sh`      | Build Docker image and start container |
+| `scripts/stop.sh`       | Stop and clean up container            |
+| `scripts/start.bat`     | Windows start                          |
+| `scripts/stop.bat`      | Windows stop                           |
+| `scripts/e2e-server.sh` | E2E test server                        |
 
 ## Project Structure
 

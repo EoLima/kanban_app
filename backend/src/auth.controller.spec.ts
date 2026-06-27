@@ -6,10 +6,10 @@ import type { Response, Request } from 'express';
 
 describe('AuthController', () => {
   let authController: AuthController;
-  let authService: { validate: jest.Mock };
+  let authService: { validate: jest.Mock; findById: jest.Mock };
 
   beforeEach(async () => {
-    authService = { validate: jest.fn() };
+    authService = { validate: jest.fn(), findById: jest.fn() };
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
@@ -85,21 +85,35 @@ describe('AuthController', () => {
   });
 
   describe('session', () => {
-    it('should return authenticated true if session cookie is present', () => {
+    it('should return authenticated true if session cookie matches existing user', async () => {
+      authService.findById.mockResolvedValue({ id: 'user-cuid-123' });
+
       const mockReq = {
-        cookies: { session_id: 'any-session-id' },
+        cookies: { session_id: 'user-cuid-123' },
       } as unknown as Request;
 
-      const result = authController.session(mockReq);
+      const result = await authController.session(mockReq);
       expect(result).toEqual({ authenticated: true });
     });
 
-    it('should return authenticated false if no session cookie', () => {
+    it('should return authenticated false if no session cookie', async () => {
       const mockReq = {
         cookies: {},
       } as unknown as Request;
 
-      expect(authController.session(mockReq)).toEqual({ authenticated: false });
+      const result = await authController.session(mockReq);
+      expect(result).toEqual({ authenticated: false });
+    });
+
+    it('should return authenticated false if session cookie does not match any user', async () => {
+      authService.findById.mockResolvedValue(null);
+
+      const mockReq = {
+        cookies: { session_id: 'stale-session-id' },
+      } as unknown as Request;
+
+      const result = await authController.session(mockReq);
+      expect(result).toEqual({ authenticated: false });
     });
   });
 });

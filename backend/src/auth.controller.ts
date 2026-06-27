@@ -47,10 +47,11 @@ export class AuthController {
   }
 
   @Get('session')
-  session(@Req() req: Request) {
+  async session(@Req() req: Request) {
     const sessionId = req.cookies?.['session_id'];
     if (sessionId) {
-      return { authenticated: true };
+      const user = await this.authService.findById(sessionId);
+      if (user) return { authenticated: true };
     }
     return { authenticated: false };
   }

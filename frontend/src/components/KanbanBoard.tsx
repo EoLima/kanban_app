@@ -1,5 +1,6 @@
 "use client";
 
+import clsx from "clsx";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   DndContext,
@@ -13,6 +14,7 @@ import {
 } from "@dnd-kit/core";
 import { KanbanColumn } from "@/components/KanbanColumn";
 import { KanbanCardPreview } from "@/components/KanbanCardPreview";
+import { ChatSidebar } from "@/components/ChatSidebar";
 import { createId, moveCard, type BoardData } from "@/lib/kanban";
 import {
   fetchBoard,
@@ -35,6 +37,7 @@ export const KanbanBoard = ({ onLogout }: KanbanBoardProps) => {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const originalTitleRef = useRef<Record<string, string>>({});
 
   const loadBoard = useCallback(async () => {
@@ -47,6 +50,15 @@ export const KanbanBoard = ({ onLogout }: KanbanBoardProps) => {
       setLoadError(LOAD_ERROR_MESSAGE);
     } finally {
       setIsLoading(false);
+    }
+  }, []);
+
+  const refreshBoard = useCallback(async () => {
+    try {
+      const data = await fetchBoard();
+      setBoard(data);
+    } catch {
+      // silent — keep current board data
     }
   }, []);
 
@@ -393,6 +405,29 @@ export const KanbanBoard = ({ onLogout }: KanbanBoardProps) => {
           </DragOverlay>
         </DndContext>
       </main>
+
+      <button
+        type="button"
+        onClick={() => setIsChatOpen((prev) => !prev)}
+        className={clsx(
+          "fixed bottom-6 right-6 z-30 flex items-center gap-2 rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-wider text-white shadow-lg transition hover:brightness-110 cursor-pointer",
+          isChatOpen
+            ? "bg-[var(--gray-text)]"
+            : "bg-[var(--secondary-purple)]",
+        )}
+        aria-label={isChatOpen ? "Close AI chat" : "Open AI chat"}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2C6.48 2 2 6.48 2 12c0 1.88.54 3.63 1.48 5.12L2 22l4.88-1.48C8.37 21.46 10.12 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z" fill="currentColor" />
+        </svg>
+        {isChatOpen ? "Close" : "AI Chat"}
+      </button>
+
+      <ChatSidebar
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+        onBoardChanged={refreshBoard}
+      />
     </div>
   );
 };

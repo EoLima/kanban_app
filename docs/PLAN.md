@@ -159,7 +159,7 @@ This document contains the step-by-step implementation checklist, validation pla
 
 - [ X ] Implement an AI integration service in the NestJS backend.
 - [ X ] Parse `OPENROUTER_API_KEY` from environment.
-- [ X ] Implement connectivity validation route `POST /api/ai/test`. This sends a simple mathematical request (e.g. `2+2=`) to OpenRouter targeting the `google/gemini-2.5-flash:free` model.
+- [ X ] Implement connectivity validation route `POST /api/ai/test`. This sends a simple mathematical request (e.g. `2+2=`) to OpenRouter targeting the `openai/gpt-oss-20b:free` model.
 - [ X ] Set proper referer headers (`HTTP-Referer` and `X-Title`) to register the request correctly.
 
 ### Success Criteria
@@ -177,7 +177,7 @@ This document contains the step-by-step implementation checklist, validation pla
 
 ### Tasks Checklist
 
-- [ X ] Define system prompts for `google/gemini-2.5-flash:free` passing:
+- [ X ] Define system prompts for `openai/gpt-oss-20b:free` passing:
   - Current board structure JSON (all columns, cards, and keys).
   - User's text prompt request.
   - Structured output JSON schema.

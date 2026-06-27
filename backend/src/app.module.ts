@@ -23,7 +23,6 @@ import { AiModule } from './ai/ai.module';
     AiModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
-      exclude: ['/api*'],
     }),
   ],
   controllers: [AppController, AuthController],

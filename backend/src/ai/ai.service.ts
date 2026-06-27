@@ -1,7 +1,7 @@
 import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const MODEL = 'google/gemini-2.5-flash:free';
+const MODEL = 'openai/gpt-oss-20b:free';
 
 interface OpenRouterResponse {
   choices: { message: { content: string } }[];
