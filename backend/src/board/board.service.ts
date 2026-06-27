@@ -54,30 +54,26 @@ export class BoardService {
       );
       if (!targetColumn) throw new NotFoundException('Target column not found');
 
-      await this.prisma.card.update({
-        where: { id: dto.cardId },
-        data: { columnId: dto.targetColumnId },
-      });
-
+      // Target cards do not yet include the moved card (it is still in source).
       const targetCards = await this.prisma.card.findMany({
         where: { columnId: dto.targetColumnId },
         orderBy: { position: 'asc' },
       });
 
-      targetCards.splice(dto.targetIndex, 0, {
-        ...card,
-        columnId: dto.targetColumnId,
-        position: 0,
-      });
+      targetCards.splice(dto.targetIndex, 0, card);
 
       for (let i = 0; i < targetCards.length; i++) {
+        const isMoved = targetCards[i].id === dto.cardId;
         await this.prisma.card.update({
           where: { id: targetCards[i].id },
-          data: { position: i },
+          data: {
+            position: i,
+            ...(isMoved ? { columnId: dto.targetColumnId } : {}),
+          },
         });
       }
 
-      // Reindex source column
+      // Reindex source column (moved card no longer present)
       const sourceCards = await this.prisma.card.findMany({
         where: { columnId: dto.sourceColumnId },
         orderBy: { position: 'asc' },

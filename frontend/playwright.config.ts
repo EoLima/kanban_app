@@ -11,10 +11,10 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   webServer: {
-    command: "npm run dev -- --hostname 127.0.0.1 --port 3000",
+    command: "bash ../scripts/e2e-server.sh",
     url: "http://127.0.0.1:3000",
     reuseExistingServer: true,
-    timeout: 120_000,
+    timeout: 180_000,
   },
   projects: [
     {

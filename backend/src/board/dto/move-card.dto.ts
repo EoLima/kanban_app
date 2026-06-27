@@ -1,4 +1,4 @@
-import { IsString, MinLength } from 'class-validator';
+import { IsString, MinLength, IsInt, Min } from 'class-validator';
 
 export class MoveCardDto {
   @IsString()
@@ -13,6 +13,11 @@ export class MoveCardDto {
   @MinLength(1)
   sourceColumnId: string;
 
+  @IsInt()
+  @Min(0)
   targetIndex: number;
+
+  @IsInt()
+  @Min(0)
   sourceIndex: number;
 }

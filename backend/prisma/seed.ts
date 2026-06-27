@@ -4,7 +4,6 @@ import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 const INITIAL_COLUMNS = [
-  ,
   'Backlog',
   'Discovery',
   'In Progress',

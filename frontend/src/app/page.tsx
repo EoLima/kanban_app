@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { KanbanBoard } from "@/components/KanbanBoard";
 import { LoginView } from "@/components/LoginView";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 export default function Home() {
   const [authStatus, setAuthStatus] = useState<"loading" | "authenticated" | "unauthenticated">("loading");
@@ -38,5 +39,9 @@ export default function Home() {
     return <LoginView onLoginSuccess={() => setAuthStatus("authenticated")} />;
   }
 
-  return <KanbanBoard onLogout={() => setAuthStatus("unauthenticated")} />;
+  return (
+    <ErrorBoundary>
+      <KanbanBoard onLogout={() => setAuthStatus("unauthenticated")} />
+    </ErrorBoundary>
+  );
 }
